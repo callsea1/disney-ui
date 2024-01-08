@@ -5,7 +5,7 @@
 
   export let data: PageData; // get data for SSR
 
-  let name = $page.url.searchParams.get('name');
+  let name = $page.url.searchParams.get('name') || '';
   let pageNumber = $page.url.searchParams.get('page') || 1;
   let pageSize = $page.url.searchParams.get('pageSize') || 5;
   let fullApiUrl = $page.url.href;
@@ -13,9 +13,6 @@
   const {
     charactersResponse: { data: disneyCharacterData, info }
   } = data;
-
-  console.log('data: ', data);
-  console.log($page.url);
 
   let displayData = disneyCharacterData || [];
   let nextButtonSearch = (info && info.nextPage && '?' + info.nextPage.split('?')[1]) || null;
@@ -59,6 +56,18 @@
       : null;
   };
 </script>
+
+<form method="POST" action="?/create" class="p-4">
+  <label>
+    Create Character
+    <input name="name" type="text" />
+  </label>
+  <label>
+    Image url
+    <input name="url" type="text" />
+  </label>
+  <button>Create</button>
+</form>
 
 <input
   type="text"

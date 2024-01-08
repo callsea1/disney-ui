@@ -17,3 +17,31 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
 
   return { charactersResponse };
 };
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+  create: async ({ request }) => {
+    const data = await request.formData();
+    const name = data.get('name');
+    const url = data.get('url');
+
+    console.log(name, url);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, url })
+    };
+
+    const res = await fetch(fireplaceApi, options);
+
+    if (res.status >= 500) throw 'problem with post';
+
+    const characterResponse = await res.json();
+
+    return characterResponse;
+  }
+};
